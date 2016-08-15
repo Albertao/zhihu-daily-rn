@@ -8,7 +8,8 @@ import React, { Component } from 'react';
 import {
   AppRegistry,
   Navigator,
-  BackAndroid
+  BackAndroid,
+  ToastAndroid,
 } from 'react-native';
 var styles = require('./style');
 var route = require('./route.js');
@@ -29,6 +30,14 @@ var zhihuDaily =React.createClass ({
     if (routers.length > 1) {
       nav.pop();
       return true;
+    }else{
+        if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
+        //最近2秒内按过back键，可以退出应用。
+          return false;
+        }
+        this.lastBackPressed = Date.now();
+        ToastAndroid.show('再按一次退出应用', 2);
+        return true;
     }
     return false;
   },

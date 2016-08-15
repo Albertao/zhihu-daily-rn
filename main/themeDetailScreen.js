@@ -55,10 +55,14 @@ class ThemeDetailScreen extends Component{
   }
 
   renderLoaded() {
-     var html_string = HTML+this.state.article.css[0]
-        +"' /></head><body>"
-        +this.state.article.body
-        +"</body></html>";
+     if (this.state.article.body) {
+       var html_string = HTML+this.state.article.css[0]
+          +"' /></head><body>"
+          +this.state.article.body
+          +"</body></html>";
+     }else{
+       var url = this.state.article.share_url;
+     }
      return (
        <View style={styles.container}>
        <StatusBar
@@ -76,7 +80,7 @@ class ThemeDetailScreen extends Component{
           ref="webview"
           automaticallyAdjustContentInsets={false}
           style={styles.webView}
-          source={{html: html_string}}
+          source={html_string? {html: html_string} : {uri: url}}
           javaScriptEnabled={true}
           domStorageEnabled={true}
           decelerationRate="normal"

@@ -3,6 +3,7 @@ import {
   Text,
   View,
   StatusBar,
+  ScrollView,
 } from 'react-native';
 import {
   Card,
@@ -63,6 +64,7 @@ class ListScreen extends Component{
          navIconName="arrow-back"
          onIconClicked={() => {this.props.navigator.pop()}}
          style={styles.toolbar} />
+       <ScrollView style={styles.container}>
          {this.state.detail.stories.map((story, index) => {
            return (
             <View key={index}>
@@ -76,6 +78,7 @@ class ListScreen extends Component{
             </View>
            );
          })}
+       </ScrollView>
        </View>
      );
   }
