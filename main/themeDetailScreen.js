@@ -13,9 +13,9 @@ var styles = require('../style.js');
 var ProgressBar =require('ActivityIndicator');
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const HTML = "<html><head><style type=\"text/css\"> .img-place-holder2{height:100%;width:100%;} </style><link rel='stylesheet' type='text/css' href='"
+const HTML = "<html><head><link rel='stylesheet' type='text/css' href='"
 
-class DetailScreen extends Component{
+class ThemeDetailScreen extends Component{
   constructor(props) {
     super(props);
     this.state = {
@@ -57,8 +57,7 @@ class DetailScreen extends Component{
   renderLoaded() {
      var html_string = HTML+this.state.article.css[0]
         +"' /></head><body>"
-        +this.state.article.body.replace('<div class="img-place-holder"></div>', '<div class="img-place-holder"><img class="img-place-holder2" src="'
-        + this.state.article.image + '"/></div>')
+        +this.state.article.body
         +"</body></html>";
      return (
        <View style={styles.container}>
@@ -84,7 +83,12 @@ class DetailScreen extends Component{
           startInLoadingState={true}
         />
         <Divider />
-        {this.state.article.section ? this.renderSection() : false}
+        <View style={styles.section}>
+          <Button
+            text={"本文来自："+this.state.article.theme.name+"合集"}
+            onPress={() => this.toList(this.state.article.theme.id)}
+            raised={true} />
+        </View>
        </View>
      );
   }
@@ -100,16 +104,6 @@ class DetailScreen extends Component{
       );
    }
 
-   renderSection() {
-     return (
-       <View style={styles.section}>
-              <Button
-                text={"本文来自："+this.state.article.section.name+"合集"}
-                onPress={() => this.toList(this.state.article.section.id)}
-                raised={true} />
-        </View>
-     );
-   }
  }
 
-module.exports = DetailScreen;
+module.exports = ThemeDetailScreen;

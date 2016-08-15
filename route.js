@@ -3,14 +3,16 @@ import {
   Text,
   View,
   StatusBar,
-  ToolbarAndroid
 } from 'react-native';
 var ScrollableTabView = require('react-native-scrollable-tab-view');
 var styles = require ('./style');
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import MainScreen from './tabs/mainScreen';
-import DetailScreen from './main/detailScreen'
-//import ThankScreen from './tabs/thankScreen';
+import CategoryScreen from './tabs/categoryScreen';
+import ThankScreen from './tabs/thankScreen';
+import DetailScreen from './main/detailScreen';
+import ListScreen from './main/listScreen';
+import ThemeDetailScreen from './main/themeDetailScreen';
 
 exports.setRoute = (router, nav) => {
   switch (router.id) {
@@ -31,12 +33,16 @@ exports.setRoute = (router, nav) => {
           tabBarActiveTextColor="#fff"
           tabBarInactiveTextColor="#fffff0">
           <MainScreen tabLabel="首页" navigator={nav} />
-          <MainScreen tabLabel="分类" navigator={nav} />
-          <MainScreen tabLabel="关于" navigator={nav} />
+          <CategoryScreen tabLabel="分类" navigator={nav} />
+          <ThankScreen tabLabel="关于" navigator={nav} />
         </ScrollableTabView>
         </View>
       );
     case 'detail':
       return (<DetailScreen navigator={nav} title="Detail" route={router} / >);
+    case 'list':
+      return (<ListScreen navigator={nav} title="List" route={router} / >);
+    case 'themeDetail':
+      return (<ThemeDetailScreen navigator={nav} title="List" route={router} / >);
   }
 }

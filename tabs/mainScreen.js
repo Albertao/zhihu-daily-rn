@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import {
   Text,
   View,
-  Navigator,
-  TouchableHighlight,
   Image,
   ScrollView,
+  RefreshControl
 } from 'react-native';
 import {
   Button,
@@ -22,6 +21,7 @@ class MainScreen extends Component{
       stories : [],
       top_stories: [],
       date: 0,
+      refreshing: true,
     }
   }
 
@@ -42,9 +42,14 @@ class MainScreen extends Component{
           stories: resJSON.stories,
           top_stories: resJSON.top_stories,
           date: resJSON.date,
+          refreshing: false,
         })
       })
       .catch((err) => {console.error(err)})
+  }
+
+  _onRefresh() {
+    this.fetchContent
   }
 
   render(){
@@ -57,7 +62,18 @@ class MainScreen extends Component{
 
    renderLoaded() {
      return (
-        <ScrollView style={styles.container}>
+        <ScrollView
+            style={styles.container}
+            refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+              tintColor="#ff0000"
+              title="Loading..."
+              titleColor="#00ff00"
+              colors={['#64b5f6', '#2196f3', '#1976d2']}
+              progressBackgroundColor="#fff"
+            />}>
             {this.state.stories.map((story, index) => {
               return (
                 <View key={index}>

@@ -4,10 +4,12 @@ import {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fafafa',
   },
   loadingContainer: {
     flex: 1,
     padding: 20,
+    backgroundColor: '#fafafa',
   },
   toolbar: {
     height: 56,
@@ -31,13 +33,21 @@ const styles = StyleSheet.create({
     marginTop:15,
   },
   headerImg: {
-    zIndex:2,
     height: 200,
+    zIndex: 2,
+    position: 'absolute',
+    bottom: 200,
   },
-  webView: {
-    zIndex:2,
-
+  section: {
+    backgroundColor: '#2196f3',
+    padding: 10,
   },
+  avatar: {
+    flex: 1,
+  },
+  sectionText: {
+    flex: 3,
+  }
 });
 
 module.exports = styles;
