@@ -4,12 +4,14 @@ import {
   View,
   Image,
   ScrollView,
-  RefreshControl
+  RefreshControl,
+  TouchableHighlight,
 } from 'react-native';
 import {
   Button,
   Card,
 } from 'react-native-material-design';
+import Swiper from 'react-native-swiper';
 var styles = require('../style.js');
 var ProgressBar =require('ActivityIndicator');
 
@@ -60,6 +62,23 @@ class MainScreen extends Component{
     }
    }
 
+renderPagination = (index, total, context) => {
+  return (
+    <View style={{
+      position: 'absolute',
+      bottom: -25,
+      right: 10
+    }}>
+      <Text>
+        <Text style={{
+          color: '#000',
+          fontSize: 20
+        }}>{index + 1}</Text>/{total}
+      </Text>
+    </View>
+  )
+}
+
    renderLoaded() {
      return (
         <ScrollView
@@ -74,6 +93,33 @@ class MainScreen extends Component{
               colors={['#64b5f6', '#2196f3', '#1976d2']}
               progressBackgroundColor="#fff"
             />}>
+            <Swiper 
+              style={styles.wrapper} 
+              height={280}
+              autoplay={true}
+              autoplayTimeout={3}
+              dot={<View style={{backgroundColor:'rgba(33,150,243,0.5)', width: 10, height: 10,borderRadius: 5, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3,}} />}
+              activeDot={<View style={{backgroundColor: '#2196f3', width: 14, height: 14, borderRadius: 7, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3,}} />}
+              paginationStyle={{
+                bottom: 2, height: 27.5, backgroundColor: 'rgba(0, 0, 0, 0.3)'
+              }} loop={true}>
+              {this.state.top_stories.map((story, index) => {
+                console.log(story.title);
+                return (
+                  <View key={index} style={styles.slide}>
+                    <Image style={styles.image} source={{uri: story.image}} />
+                    <TouchableHighlight 
+                      style={styles.textWrapper} 
+                      onPress={() => this.toDetail(story.id)}
+                      activeOpacity={1}
+                      underlayColor ="rgba(0, 0, 0, 0.3)">
+                      <Text style={styles.text}>{story.title}</Text>
+                    </TouchableHighlight>
+                  </View>
+                );
+              })}
+            </Swiper>
+            
             {this.state.stories.map((story, index) => {
               return (
                 <View key={index}>
@@ -93,6 +139,7 @@ class MainScreen extends Component{
               );
             })}
         </ScrollView>
+        
       );
    }
 

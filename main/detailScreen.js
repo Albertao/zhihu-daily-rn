@@ -21,7 +21,7 @@ class DetailScreen extends Component{
     this.state = {
       loaded: false,
       article: {},
-      aid: 0
+      aid: 0 
     }
   }
 

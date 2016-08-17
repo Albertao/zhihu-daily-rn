@@ -47,7 +47,37 @@ const styles = StyleSheet.create({
   },
   sectionText: {
     flex: 3,
-  }
+  },
+  carousel: {
+    height: 250,
+  },
+  wrapper: {
+    height: 250,
+  },
+  image: {
+    flex: 1,
+    height: 280,
+  },
+  slide: {
+    height: 200,
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'transparent'
+  },
+  textWrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    padding: 10,
+    paddingBottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    position: 'absolute',
+    bottom: 30,
+  },
+  text: {
+    fontSize: 25,
+    color: '#fff',
+  },
 });
 
 module.exports = styles;
