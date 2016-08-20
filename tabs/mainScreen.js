@@ -21,16 +21,24 @@ var styles = require('../style.js');
 var ProgressBar =require('ActivityIndicator');
 var moment = require('moment');
 
+var stories = {};
+var date;
+var LoadingMore = false;
+
 class MainScreen extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      ds : new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2, sectionHeaderHasChanged: (s1, s2) => s1 !== s2}),
+      ds : new ListView.DataSource({
+        rowHasChanged: (r1, r2) => r1.id !== r2.id, 
+        sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
+        getRowData: (dataBlob, sectionId, rowId) => dataBlob[sectionId][rowId]
+      }),
       loaded : false,
       bottomLoaded: true,
-      stories : {},
+      stories: {},
+      dataSource: {},
       top_stories: [],
-      date: 0,
       refreshing: true,
     }
   }
@@ -48,12 +56,13 @@ class MainScreen extends Component{
     return fetch('http://news-at.zhihu.com/api/4/news/latest')
       .then((res) => res.json())
       .then((resJSON) => {
+        date = resJSON.date;
+        stories = {date: resJSON.stories};
         return that.setState({
           loaded: true,
           bottomLoaded: true,
-          stories: {"today" : resJSON.stories},//this.state.ds.cloneWithRowsAndSections(resJSON.stories, resJSON.date),
           top_stories: resJSON.top_stories,
-          date: resJSON.date,
+          dataSource: this.state.ds.cloneWithRowsAndSections(stories),
           refreshing: false,
         })
       })
@@ -61,11 +70,19 @@ class MainScreen extends Component{
   }
 
   fetchMore() {
-    return fetch('http://news-at.zhihu.com/api/4/news/before/'+this.state.date)
+    LoadingMore = true;
+    return fetch('http://news-at.zhihu.com/api/4/news/before/'+date)
       .then((res) => res.json())
       .then((resJSON) => {
-        console.log(resJSON);
-        return this.state.stories.append({"20160818": resJSON.stories})
+        date = resJSON.date;
+        LoadingMore = false;
+        console.log(date);
+        stories[date] = resJSON.stories;
+        //console.log(stories);
+        return this.setState({
+          // stories: this.state.stories.[date],
+          dataSource: this.state.ds.cloneWithRowsAndSections(stories),
+        });
       })
       .catch((err) => {console.error(err)})
   }
@@ -110,7 +127,7 @@ _renderFooter() {
 renderLoaded() {
   return (
     <ListView
-      dataSource={this.state.ds.cloneWithRowsAndSections(this.state.stories)}
+      dataSource={this.state.dataSource}
       renderHeader={() => {
         return (
           <Swiper 
