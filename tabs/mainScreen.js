@@ -24,6 +24,7 @@ var moment = require('moment');
 var stories = {};
 var date;
 var LoadingMore = false;
+var page=0;
 
 class MainScreen extends Component{
   constructor(props) {
@@ -32,7 +33,7 @@ class MainScreen extends Component{
       ds : new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1.id !== r2.id, 
         sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
-        getRowData: (dataBlob, sectionId, rowId) => dataBlob[sectionId][rowId]
+        //getRowData: (dataBlob, sectionId, rowId) => dataBlob[sectionId][rowId]
       }),
       loaded : false,
       bottomLoaded: true,
@@ -57,7 +58,8 @@ class MainScreen extends Component{
       .then((res) => res.json())
       .then((resJSON) => {
         date = resJSON.date;
-        stories = {date: resJSON.stories};
+        page++
+        stories[page+date] = resJSON.stories;
         return that.setState({
           loaded: true,
           bottomLoaded: true,
@@ -76,9 +78,12 @@ class MainScreen extends Component{
       .then((resJSON) => {
         date = resJSON.date;
         LoadingMore = false;
-        console.log(date);
-        stories[date] = resJSON.stories;
-        //console.log(stories);
+        page++;
+        //stories["20123130"] = resJSON.stories;
+        stories[page+date] = resJSON.stories;
+        for(var name in stories) {
+          console.log(name);
+        }
         return this.setState({
           // stories: this.state.stories.[date],
           dataSource: this.state.ds.cloneWithRowsAndSections(stories),
@@ -159,7 +164,7 @@ renderLoaded() {
       }}
       renderSectionHeader={(sectionData, date) => {
           return (
-            <Subheader text={date} color="#2196f3" />
+            <Subheader text={moment(date.substring(1)).format('YYYY-MM-DD')} color="#2196f3" />
           );
       }}
       renderRow={(story, rowId, sectionId) => {
