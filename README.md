@@ -24,6 +24,12 @@ then delete the comment of this line `export { default as List } from './List';`
 
 - [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons)
 
-# how to generat signed apk：
+# how to generate signed apk：
 
 please seek in the [docs of rn](http://facebook.github.io/react-native/docs/signed-apk-android.html)
+
+# what to do next:
+
+- [ ] add network sniff
+- [ ] add local storage
+- [ ] optimize ui
